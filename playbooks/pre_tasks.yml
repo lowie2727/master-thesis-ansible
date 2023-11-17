@@ -1,0 +1,8 @@
+---
+- name: Ping
+  ansible.builtin.ping:
+  register: output
+
+- name: Output previous command
+  ansible.builtin.debug:
+    msg: "{{ output.ping }}"

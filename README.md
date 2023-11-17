@@ -77,3 +77,11 @@ If the inventory file is configuered correctly the following command should work
 ```
 ansible -i inventory.ini jenkins -m ping
 ```
+
+#### Deploy playbook
+
+To deploy the [main.yml](playbooks/main.yml) playbook use the following command:
+
+```
+ansible-playbook playbooks/main.yml
+```

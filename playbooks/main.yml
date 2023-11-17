@@ -1,0 +1,9 @@
+---
+- name: Main
+  hosts: all
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: General
+      ansible.builtin.import_tasks: pre_tasks.yml

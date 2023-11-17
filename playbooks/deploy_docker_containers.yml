@@ -1,0 +1,40 @@
+---
+- name: Make appdata directory
+  ansible.builtin.file:
+    path: "{{ path_to_appdata }}/"
+    state: directory
+    owner: lowie
+    group: lowie
+    mode: "0755"
+
+- name: Copy Docker Compose folders
+  ansible.builtin.copy:
+    src: ../files/docker-compose/
+    dest: "{{ path_to_appdata }}/"
+    owner: lowie
+    group: lowie
+    mode: "0755"
+
+- name: Find subdirectories in appdata folder
+  ansible.builtin.find:
+    paths: "{{ path_to_appdata }}/"
+    patterns: "*"
+    file_type: directory
+  register: subdirectories
+
+- name: Make Jenkins config folder
+  ansible.builtin.file:
+    path: "{{ path_to_appdata }}/jenkins/config"
+    state: directory
+    owner: lowie
+    group: lowie
+    mode: "0755"
+
+- name: Deploy Docker Compose stack
+  community.docker.docker_compose:
+    project_src: "{{ item.path }}"
+    files:
+      - docker-compose.yml
+  loop: "{{ subdirectories.files }}"
+  loop_control:
+    label: "{{ item.path }}"

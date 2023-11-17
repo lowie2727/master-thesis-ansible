@@ -1,0 +1,53 @@
+---
+- name: Install docker dependencies
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - python3-yaml
+      - python3-pip
+
+- name: Install Docker pip
+  become: true
+  become_user: lowie
+  community.general.pipx:
+    name: docker
+    install_deps: true
+  register: output
+  changed_when: output.changed == true
+
+- name: Add Docker apt repository key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/debian/gpg
+    dest: /etc/apt/trusted.gpg.d/docker.asc
+    mode: "0644"
+    force: true
+
+- name: Add Docker Repository
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/debian bookworm stable
+    state: present
+
+- name: Update apt and install docker-ce
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose
+      - docker-compose-plugin
+    state: present
+    update_cache: true
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: lowie
+    groups: docker
+    append: true
+
+- name: Add 1.1.1.1 to resolv.conf
+  ansible.builtin.lineinfile:
+    path: /etc/resolv.conf
+    line: "1.1.1.1"

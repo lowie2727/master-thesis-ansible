@@ -9,7 +9,7 @@
 
 - name: Copy Docker Compose folders
   ansible.builtin.copy:
-    src: ../files/docker-compose/
+    src: files/docker-compose/
     dest: "{{ path_to_appdata }}/"
     owner: lowie
     group: lowie

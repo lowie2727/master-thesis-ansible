@@ -24,7 +24,7 @@
 
 - name: Copy .bash_aliases file
   ansible.builtin.copy:
-    src: ../files/dotfiles/.bash_aliases
+    src: files/dotfiles/.bash_aliases
     dest: /home/lowie/
     owner: lowie
     group: lowie
@@ -32,7 +32,7 @@
 
 - name: Copy .bashrc file
   ansible.builtin.copy:
-    src: ../files/dotfiles/.bashrc
+    src: files/dotfiles/.bashrc
     dest: /home/lowie/
     owner: lowie
     group: lowie

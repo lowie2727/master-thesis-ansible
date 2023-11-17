@@ -7,3 +7,7 @@
   pre_tasks:
     - name: General
       ansible.builtin.import_tasks: pre_tasks.yml
+
+  tasks:
+    - name: Setup fancy terminal
+      ansible.builtin.import_tasks: setup_fancy_terminal.yml

@@ -65,7 +65,7 @@ Follow this [guide](https://docs.ansible.com/ansible/latest/installation_guide/i
 
 #### Ping the Jenkins server
 
-Add an inventory file named inventory.ini to the top folder of your Ansible directory on your host machine. The content of the inventory file should look like this:
+Add an inventory file named [inventory.ini](inventory.ini) to the top folder of your Ansible directory on your host machine. The content of the inventory file should look like this:
 
 ```ini
 [jenkins_server]
@@ -80,8 +80,26 @@ ansible -i inventory.ini jenkins -m ping
 
 #### Deploy playbook
 
-To deploy the [main.yml](playbooks/main.yml) playbook use the following command:
+To deploy the [main.yml](main.yml) playbook use the following command:
 
 ```
 ansible-playbook playbooks/main.yml
 ```
+
+#### Deploy on a test machine
+
+If you don't want to setup the key based authentication you can use the following command:
+
+```bash
+ansible-playbook -i target-ip, main.yml --extra-vars "ansible_become_password=sudo_password ansible_ssh_password=ssh_password"
+```
+
+Make sure you remoted in to the server once before using this command. This can be done using:
+
+```bash
+ssh username@taget-ip
+```
+
+### Jenkins Setup
+
+Check the Jenkins [README.md](files/docker-compose/jenkins/README.md) for further instructions.

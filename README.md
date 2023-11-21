@@ -22,13 +22,19 @@ Copy the public key to the target machine. The key file is in the folder you jus
 ssh-copy-id -i /path/to/keyfile.pub user@target
 ```
 
-You will be promted for the user password. After the succesfull transfer you should add a SSH configuration to make it easier to login. change this text!!!! should be on host machine not Jenkins server
+You will be promted for the user password. After the succesfull transfer you should add a SSH configuration to make it easier to login. The config file can be created on the Jenkins server in the .ssh folder in the home directory with the following command `nano ~/.ssh/config`. Paste the following in the config file:
 
 ```
 Host jenkins
   Hostname jenkins-server-ip
   User username
   IdentityFile /path/to/private_key_file
+```
+
+To SSH into the Jenkins server simply type:
+
+```
+ssh jenkins
 ```
 
 #### Step 3
@@ -51,12 +57,6 @@ Finally, restart the SSH server.
 
 ```bash
 sudo systemctl restart sshd
-```
-
-To SSH into the Jenkins server simply type:
-
-```
-ssh jenkins
 ```
 
 ### Installing Ansible

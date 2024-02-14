@@ -63,6 +63,14 @@ sudo systemctl restart sshd
 
 Follow this [guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) to install ansible on the host machine.
 
+Make sure to also install all the requirements using the following command:
+
+```bash
+ansible-galaxy install -r requirements.yml
+```
+
+Also make sure your OS has `sshpass` installed.
+
 #### Ping the Jenkins server
 
 Add an inventory file named [inventory.ini](inventory.ini) to the top folder of your Ansible directory on your host machine. The content of the inventory file should look like this:

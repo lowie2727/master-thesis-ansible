@@ -6,3 +6,7 @@
 - name: Output previous command
   ansible.builtin.debug:
     msg: "{{ output.ping }}"
+
+- name: Update apt
+  ansible.builtin.apt:
+    update_cache: true

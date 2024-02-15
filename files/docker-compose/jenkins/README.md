@@ -6,6 +6,12 @@
 
 ## Setup
 
+To create the public key file in the current working directory use the following command:
+
+```bash
+ssh-keygen -f jenkins_agent_key
+```
+
 Make sure you updated the [jenkins_agent_key.pub](/files/docker-compose/jenkins/jenkins_agent_key.pub) file to the correct public key when using a custom docker image.
 
 ### Create custom agent docker image

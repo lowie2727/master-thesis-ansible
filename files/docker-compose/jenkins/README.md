@@ -6,6 +6,40 @@
 
 ## Setup
 
+Make sure you updated the [jenkins_agent_key.pub](/files/docker-compose/jenkins/jenkins_agent_key.pub) file to the correct public key when using a custom docker image.
+
+### Create custom agent docker image
+
+This Ansible playbook will use a custom docker image by default.
+
+```yaml
+  ssh-agent:
+    container_name: jenkins-ssh-agent
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+```
+
+This will build the [Dockerfile](/files/docker-compose/jenkins/Dockerfile) with custom packages included. Make sure you paste your public key in the [public keyfile](/files/docker-compose/jenkins/jenkins_agent_key.pub).
+
+### Using default docker image
+
+If you don't want any custom packages in your ssh-agent you can modify the [docker-compose](/files/docker-compose/jenkins/docker-compose.yml) to the following:
+
+```yaml
+  ssh-agent:
+    image: jenkins/ssh-agent:latest-alpine-jdk17
+    container_name: jenkins-ssh-agent
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=<public_key>
+    restart: always
+```
+
+This will use the provided docker image by Jenkins. Make sure to paste your public key in the designated spot.
+
+### Web interface
+
 Navigate to the web interface and check the log files for the initial admin password. To check the logs files run the following command on the Jenkins server:
 
 ```bash
@@ -31,18 +65,3 @@ Follow these [steps](https://www.jenkins.io/doc/book/using/using-agents/#delegat
 It is [inadvisable](https://www.jenkins.io/doc/book/security/controller-isolation/#not-building-on-the-built-in-node) to build using the built-in node.
 
 navigate to `Manage Jenkins > Nodes > Built-In Node > Configure` and set the `Number of executors` parameter to 0.
-
-### Create custom agent docker image
-
-Modify the original [docker-compose](/files/docker-compose/jenkins/docker-compose.yml) file to the following:
-
-```yaml
-  ssh-agent:
-    container_name: jenkins-ssh-agent
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: always
-```
-
-This will build the [Dockerfile](/files/docker-compose/jenkins/Dockerfile) with custom packages included. Make sure the public keyfile is in the same place as the Dockerfile.

@@ -33,6 +33,7 @@
 - name: Deploy Docker Compose stack
   community.docker.docker_compose:
     project_src: "{{ item.path }}"
+    build: true
     files:
       - docker-compose.yml
   loop: "{{ subdirectories.files }}"

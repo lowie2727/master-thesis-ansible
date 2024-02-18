@@ -22,18 +22,49 @@
     name:
       - exa
 
-- name: Copy .bash_aliases file
+- name: Install Zsh
+  ansible.builtin.apt:
+    name:
+      - zsh
+
+- name: Copy .zsh_aliases file
   ansible.builtin.copy:
-    src: files/dotfiles/.bash_aliases
+    src: files/dotfiles/.zsh_aliases
     dest: /home/lowie/
     owner: lowie
     group: lowie
     mode: "0644"
 
-- name: Copy .bashrc file
+- name: Copy .zshrc file
   ansible.builtin.copy:
-    src: files/dotfiles/.bashrc
+    src: files/dotfiles/.zshrc
     dest: /home/lowie/
     owner: lowie
     group: lowie
     mode: "0644"
+
+- name: Make .zsh-plugins directory
+  ansible.builtin.file:
+    path: /home/lowie/.zsh-plugins
+    state: directory
+    owner: lowie
+    group: lowie
+    mode: "0744"
+
+- name: Copy .zsh-plugins
+  ansible.builtin.copy:
+    src: files/dotfiles/.zsh-plugins
+    dest: /home/lowie/
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Change default root shell to Zsh
+  ansible.builtin.command: chsh -s /bin/zsh root
+  register: output
+  changed_when: "'Shell changed' in output.stdout"
+
+- name: Change default user shell to Zsh
+  ansible.builtin.command: chsh -s /bin/zsh lowie
+  register: output
+  changed_when: "'Shell changed' in output.stdout"

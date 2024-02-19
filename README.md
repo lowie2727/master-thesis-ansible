@@ -1,113 +1,55 @@
 # Master thesis
 
-## Debian server setup
+## Vagrant
 
-### Setup SSH key
+To make it easier to test the Ansible playbook on virtual machines, [Vagrant](https://developer.hashicorp.com/vagrant) is used.
 
-#### Step 1
+If you want to use Ansible separately from Vagrant on a Debian server, you can read [this](/provisioning/README.md) explanation.
 
-Generate a key pair on the host machine with the ed25519 algorithm.
+### Setup
 
-```bash
-ssh-keygen -t ed25519 -C "name-of-host"
-```
+First, install vagrant via the following [site](https://developer.hashicorp.com/vagrant/install) for the appropriate operating system.
 
-The generated key is in a name and location of your choice.
+In this case, libvirt was used to manage the virtual machines, but there are [other options](https://developer.hashicorp.com/vagrant/docs/providers). The following [link](https://opensource.com/article/21/10/vagrant-libvirt) explains how to set up libvirt.
 
-#### Step 2
+All Vagrant settings can be found in the [Vagrantfile](/Vagrantfile). More info on the Vagrantfile can be found [here](https://developer.hashicorp.com/vagrant/docs/vagrantfile).
 
-Copy the public key to the target machine. The key file is in the folder you just selected.
+### Useful Vagrant commands
 
-```bash
-ssh-copy-id -i /path/to/keyfile.pub user@target
-```
-
-You will be promted for the user password. After the succesfull transfer you should add a SSH configuration to make it easier to login. The config file can be created on the Jenkins server in the .ssh folder in the home directory with the following command `nano ~/.ssh/config`. Paste the following in the config file:
-
-```
-Host jenkins
-  Hostname jenkins-server-ip
-  User username
-  IdentityFile /path/to/private_key_file
-```
-
-To SSH into the Jenkins server simply type:
-
-```
-ssh jenkins
-```
-
-#### Step 3
-
-For security reasons, it is better to disable password-based authentication on the Jenkins server  machine.
-
-The configuration is located in the following file:
+[Link](https://developer.hashicorp.com/vagrant/docs/cli) to the documentation.
 
 ```bash
-sudo nano /etc/ssh/sshd_config
+vagrant up
 ```
 
-Uncomment and change the following line (yes to no).
+Creates and configures guest machines according to your Vagrantfile.
 
 ```bash
-PasswordAuthentication no
+vagrant halt
 ```
 
-Finally, restart the SSH server.
+Stops the running VM.
 
 ```bash
-sudo systemctl restart sshd
+vagrant destroy
 ```
 
-### Installing Ansible
-
-Follow this [guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) to install ansible on the host machine.
-
-Make sure to also install all the requirements using the following command:
+Stops the running VM and destroys all resources that were created during the VM creation process.
 
 ```bash
-ansible-galaxy install -r requirements.yml
+vagrant ssh
 ```
 
-Also make sure your OS has `sshpass` installed.
-
-#### Ping the Jenkins server
-
-Add an inventory file named [inventory.ini](inventory.ini) to the top folder of your Ansible directory on your host machine. The content of the inventory file should look like this:
-
-```ini
-[jenkins_server]
-jenkins ansible_host=jenkins-server-ip ansible_user=username ansible_become_password=sudo-password ansible_private_key_file=/path/to/private_key_file
-```
-
-If the inventory file is configuered correctly the following command should work:
-
-```
-ansible -i inventory.ini jenkins -m ping
-```
-
-#### Deploy playbook
-
-To deploy the [main.yml](main.yml) playbook use the following command:
-
-```
-ansible-playbook playbooks/main.yml
-```
-
-#### Deploy on a test machine
-
-If you don't want to setup the key based authentication you can use the following command:
+Connects to the VM via SSH.
 
 ```bash
-ansible-playbook -i target-ip, main.yml --extra-vars "ansible_become_password=sudo_password ansible_ssh_password=ssh_password"
+vagrant provision
 ```
 
-Make sure you remoted in to the server once before using this command. This can be done using:
+Runs the configured provisioners on the VM.
 
 ```bash
-ssh username@taget-ip
+vagrant reload
 ```
 
-### Jenkins Setup
-
-Check the Jenkins [README.md](files/docker-compose/jenkins/README.md) for further instructions.
+Reloads the VM, applying any changes to the Vagrantfile.

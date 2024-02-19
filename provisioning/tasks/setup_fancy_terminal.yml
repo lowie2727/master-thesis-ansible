@@ -11,7 +11,7 @@
 
 - name: Install powerline-shell
   become: true
-  become_user: lowie
+  become_user: "{{ user }}"
   community.general.pipx:
     name: powerline-shell
   register: output
@@ -30,31 +30,31 @@
 - name: Copy .zsh_aliases file
   ansible.builtin.copy:
     src: files/dotfiles/.zsh_aliases
-    dest: /home/lowie/
-    owner: lowie
-    group: lowie
+    dest: /home/{{ user }}/
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: "0644"
 
 - name: Copy .zshrc file
   ansible.builtin.copy:
     src: files/dotfiles/.zshrc
-    dest: /home/lowie/
-    owner: lowie
-    group: lowie
+    dest: /home/{{ user }}/
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: "0644"
 
 - name: Make .zsh-plugins directory
   ansible.builtin.file:
-    path: /home/lowie/.zsh-plugins
+    path: /home/{{ user }}/.zsh-plugins
     state: directory
-    owner: lowie
-    group: lowie
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: "0744"
 
 - name: Copy .zsh-plugins
   ansible.builtin.copy:
     src: files/dotfiles/.zsh-plugins
-    dest: /home/lowie/
+    dest: /home/{{ user }}/
     owner: root
     group: root
     mode: "0644"
@@ -65,6 +65,6 @@
   changed_when: "'Shell changed' in output.stdout"
 
 - name: Change default user shell to Zsh
-  ansible.builtin.command: chsh -s /bin/zsh lowie
+  ansible.builtin.command: chsh -s /bin/zsh {{ user }}
   register: output
   changed_when: "'Shell changed' in output.stdout"

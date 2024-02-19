@@ -15,11 +15,3 @@ alias pull='git pull origin'
 alias push='git push origin'
 alias gs='git status'
 alias glog='git log --graph --decorate --oneline'
-
-# cd
-alias ..='cd ..'
-alias .2='cd ../..'
-alias .3='cd ../../..'
-
-# open files from terminal
-alias open='xdg-open'

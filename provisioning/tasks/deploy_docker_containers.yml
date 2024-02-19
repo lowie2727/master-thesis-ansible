@@ -3,16 +3,16 @@
   ansible.builtin.file:
     path: "{{ path_to_appdata }}/"
     state: directory
-    owner: lowie
-    group: lowie
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: "0755"
 
 - name: Copy Docker Compose folders
   ansible.builtin.copy:
     src: files/docker-compose/
     dest: "{{ path_to_appdata }}/"
-    owner: lowie
-    group: lowie
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: "0755"
 
 - name: Find subdirectories in appdata folder
@@ -26,9 +26,27 @@
   ansible.builtin.file:
     path: "{{ path_to_appdata }}/jenkins/config"
     state: directory
-    owner: lowie
-    group: lowie
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: "0755"
+
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  community.crypto.openssh_keypair:
+    path: "{{ path_to_appdata }}/jenkins/jenkins_agent_key"
+
+- name: Set permissions for jenkins_agent_key file
+  ansible.builtin.file:
+    path: "{{ path_to_appdata }}/jenkins/jenkins_agent_key"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: "0400"
+
+- name: Set permissions for jenkins_agent_key.pub file
+  ansible.builtin.file:
+    path: "{{ path_to_appdata }}/jenkins/jenkins_agent_key.pub"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: "0444"
 
 - name: Deploy Docker Compose stack
   community.docker.docker_compose:

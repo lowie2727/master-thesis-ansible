@@ -6,14 +6,6 @@
 
 ## Setup
 
-To create the public key file in the current working directory use the following command:
-
-```bash
-ssh-keygen -f jenkins_agent_key
-```
-
-Make sure you updated the [jenkins_agent_key.pub](/files/docker-compose/jenkins/jenkins_agent_key.pub) file to the correct public key when using a custom docker image.
-
 ### Create custom agent docker image
 
 This Ansible playbook will use a custom docker image by default.
@@ -27,7 +19,7 @@ This Ansible playbook will use a custom docker image by default.
     restart: always
 ```
 
-This will build the [Dockerfile](/files/docker-compose/jenkins/Dockerfile) with custom packages included. Make sure you paste your public key in the [public keyfile](/files/docker-compose/jenkins/jenkins_agent_key.pub).
+This will build the [Dockerfile](/files/docker-compose/jenkins/Dockerfile) with custom packages included. The public key will be automaticly generated on the target machine and will be available in the `/home/username_variable/appdata/jenkins` folder.
 
 ### Using default docker image
 

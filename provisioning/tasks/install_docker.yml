@@ -10,12 +10,18 @@
 
 - name: Install Docker pip
   become: true
-  become_user: lowie
+  become_user: "{{ user }}"
   community.general.pipx:
     name: docker
     install_deps: true
   register: output
   changed_when: output.changed == true
+
+- name: Ensure remote_tmp directory exists with correct permissions
+  ansible.builtin.file:
+    path: /root/.ansible/tmp
+    state: directory
+    mode: "1777"
 
 - name: Add Docker apt repository key
   ansible.builtin.get_url:
@@ -43,7 +49,7 @@
 
 - name: Add user to docker group
   ansible.builtin.user:
-    name: lowie
+    name: "{{ user }}"
     groups: docker
     append: true
 

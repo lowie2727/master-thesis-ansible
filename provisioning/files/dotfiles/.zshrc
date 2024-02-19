@@ -5,7 +5,7 @@ SAVEHIST=1000
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/lowie/.zshrc'
+zstyle :compinstall filename '$HOME/.zshrc'
 
 autoload -Uz compinit
 compinit
@@ -15,9 +15,9 @@ export PATH="$PATH:$HOME/.local/bin"
 
 # Define an array of plugin files
 plugins=(
-    "/home/lowie/.zsh-plugins/autosuggestions.zsh"
-    "/home/lowie/.zsh-plugins/dirhistory.zsh"
-    "/home/lowie/.zsh-plugins/you-should-use.zsh"
+    "$HOME/.zsh-plugins/autosuggestions.zsh"
+    "$HOME/.zsh-plugins/dirhistory.zsh"
+    "$HOME/.zsh-plugins/you-should-use.zsh"
 )
 
 for plugin in "${plugins[@]}"; do

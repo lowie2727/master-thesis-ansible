@@ -40,11 +40,33 @@ This will use the provided docker image by Jenkins. Make sure to paste your publ
 
 Navigate to the web interface and check the log files for the initial admin password. To check the logs files run the following command on the Jenkins server:
 
-```bash
+```zsh
 docker logs jenkins
 ```
 
 After entering the initial admin password select install suggested plugins.
+
+The suggested plugins are:
+
+- [Ant Plugin](https://plugins.jenkins.io/ant)
+- [Build Timeout](https://plugins.jenkins.io/build-timeout)
+- [Credentials Binding Plugin](https://plugins.jenkins.io/credentials-binding)
+- [Email Extension Plugin](https://plugins.jenkins.io/email-ext)
+- [Folders Plugin](https://plugins.jenkins.io/cloudbees-folder)
+- [Git plugin](https://plugins.jenkins.io/git)
+- [GitHub Branch Source Plugin](https://plugins.jenkins.io/github-branch-source)
+- [Gradle Plugin](https://plugins.jenkins.io/gradle)
+- [JavaMail API](https://plugins.jenkins.io/javax-mail-api)
+- [LDAP Plugin](https://plugins.jenkins.io/ldap)
+- [Matrix Authorization Strategy Plugin](https://plugins.jenkins.io/matrix-auth)
+- [OWASP Markup Formatter Plugin](https://plugins.jenkins.io/antisamy-markup-formatter)
+- [PAM Authentication plugin](https://plugins.jenkins.io/pam-auth)
+- [Pipeline](https://plugins.jenkins.io/workflow-aggregator)
+- [Pipeline: GitHub Groovy Libraries](https://plugins.jenkins.io/pipeline-github-lib)
+- [Pipeline: Stage View Plugin](https://plugins.jenkins.io/pipeline-stage-view)
+- [SSH Build Agents plugin](https://plugins.jenkins.io/ssh-slaves)
+- [Timestamper](https://plugins.jenkins.io/timestamper)
+- [Workspace Cleanup Plugin](https://plugins.jenkins.io/ws-cleanup)
 
 ### Using agents
 
@@ -52,9 +74,11 @@ Follow the following guide to setup an agent.
 
 - [agents](https://www.jenkins.io/doc/book/using/using-agents/)
 
-You can find the add credentials button at `Manage Jenkins > Credentials > System > Global credentials (unrestricted)`
+You can find the add credentials button at `Manage Jenkins > Credentials > System > Global credentials (unrestricted)`. The public and private key can be found in the `/home/your_username/appdata/jenkins` folder on your Jenkins server.
 
-When creating a node you can just follow the guide except for the host parameter. Just set the Host to `ssh-agent`.
+You can skip the agent1 creation because it should already by present in Jenkins but it doesn't always work. It's the same as in the guide except for the host parameter. The host parameter is set `ssh-agent` because of Docker networking.
+
+### First job
 
 Follow these [steps](https://www.jenkins.io/doc/book/using/using-agents/#delegating-the-first-job-to-agent1) to check if your setup is working.
 

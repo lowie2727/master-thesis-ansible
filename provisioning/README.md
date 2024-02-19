@@ -8,7 +8,7 @@
 
 Generate a key pair on the host machine with the ed25519 algorithm.
 
-```bash
+```zsh
 ssh-keygen -t ed25519 -C "name-of-host"
 ```
 
@@ -18,7 +18,7 @@ The generated key is in a name and location of your choice.
 
 Copy the public key to the target machine. The key file is in the folder you just selected.
 
-```bash
+```zsh
 ssh-copy-id -i /path/to/keyfile.pub user@target
 ```
 
@@ -43,19 +43,19 @@ For security reasons, it is better to disable password-based authentication on t
 
 The configuration is located in the following file:
 
-```bash
+```zsh
 sudo nano /etc/ssh/sshd_config
 ```
 
 Uncomment and change the following line (yes to no).
 
-```bash
+```zsh
 PasswordAuthentication no
 ```
 
 Finally, restart the SSH server.
 
-```bash
+```zsh
 sudo systemctl restart sshd
 ```
 
@@ -65,7 +65,7 @@ Follow this [guide](https://docs.ansible.com/ansible/latest/installation_guide/i
 
 Make sure to also install all the requirements using the following command:
 
-```bash
+```zsh
 ansible-galaxy install -r requirements.yml
 ```
 
@@ -98,13 +98,13 @@ ansible-playbook main.yml
 
 If you don't want to setup the key based authentication you can use the following command:
 
-```bash
+```zsh
 ansible-playbook -i target-ip, main.yml --extra-vars "ansible_become_password=sudo_password ansible_ssh_password=ssh_password"
 ```
 
 Make sure you remoted in to the server once before using this command. This can be done using:
 
-```bash
+```zsh
 ssh username@taget-ip
 ```
 

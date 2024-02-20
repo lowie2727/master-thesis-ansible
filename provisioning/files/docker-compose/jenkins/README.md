@@ -87,3 +87,33 @@ Follow these [steps](https://www.jenkins.io/doc/book/using/using-agents/#delegat
 It is [inadvisable](https://www.jenkins.io/doc/book/security/controller-isolation/#not-building-on-the-built-in-node) to build using the built-in node.
 
 navigate to `Manage Jenkins > Nodes > Built-In Node > Configure` and set the `Number of executors` parameter to 0.
+
+## Create nightly builds pipeline
+
+From the main screen, click `New Item`, enter a valid name and select the `Pipeline` option.
+
+Under the `General` section, select the `GitHub project` box and enter the `Project url`.
+
+Under the heading `Build Triggers`, select `Build periodically`. In the `Schedule` section you can setup your build schedule with [cron](https://en.wikipedia.org/wiki/Cron) syntax.
+
+```zsh
+TZ=Europe/Brussels
+0 0 * * *
+```
+
+This configuration would run every day on midnight in the Europe/Brussels time zone. However, this is not ideal for continuously building software projects.
+
+A simple pipeline for echoing could look like this:
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('build') {
+            steps {
+                echo 'Building...'
+            }
+        }
+    }
+}
+```

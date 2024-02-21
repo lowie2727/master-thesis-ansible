@@ -8,7 +8,8 @@ If you want to use Ansible separately from Vagrant on a Debian server, you can r
 
 ### Setup
 
-If you haven't installed ansible yet, you can follow the following [explanation](/provisioning/README.md#installing-ansible).
+> [!TIP]
+> If you haven't installed ansible yet, you can follow the following [explanation](/provisioning/README.md#installing-ansible).
 
 First, install vagrant via the following [site](https://developer.hashicorp.com/vagrant/install) for the appropriate operating system.
 
@@ -41,7 +42,7 @@ All Vagrant settings can be found in the [Vagrantfile](/Vagrantfile). More info 
 
 ### Useful Vagrant commands
 
-[Link](https://developer.hashicorp.com/vagrant/docs/cli) to the documentation. 
+[Link](https://developer.hashicorp.com/vagrant/docs/cli) to the documentation.
 
 ```zsh
 vagrant up

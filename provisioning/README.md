@@ -39,7 +39,8 @@ ssh jenkins
 
 #### Step 3
 
-For security reasons, it is better to disable password-based authentication on the Jenkins server  machine.
+> [!TIP]
+> For security reasons, it is better to disable password-based authentication on the Jenkins server  machine.
 
 The configuration is located in the following file:
 
@@ -69,7 +70,8 @@ Make sure to also install all the requirements using the following command:
 ansible-galaxy install -r requirements.yml
 ```
 
-Also make sure your OS has `sshpass` installed.
+> [!IMPORTANT]
+> Also make sure your OS has `sshpass` installed.
 
 #### Ping the Jenkins server
 

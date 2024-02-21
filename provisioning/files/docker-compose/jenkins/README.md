@@ -117,3 +117,36 @@ pipeline {
     }
 }
 ```
+
+## Create continuous integration pipeline
+
+> [!IMPORTANT]
+> For this to work your Jenkins server should be exposed to the internet. You can expose it using your own domain name or use a tool like [ngrok](https://ngrok.com/) to expose your local environment.
+
+First of all, we need to create a GitHub personal access token. Navigate to [https://github.com/settings/tokens](https://github.com/settings/tokens) and generate a new classic token. Name this token something like jenkins and select an expiration period. Make sure the token has the `admin:org_hook` scope enabled. Generate the token and make sure to copy your personal access token. Once you copied your token go back to the jenkins dashboard and navigate to `Manage Jenkins` > `Credentials` > `Global` and click and `Add Credientials`. Select `Secret text` in the dropdown menu and paste your copied key in the `Secret` area. You can name `ID` something like github-pat, don't forget to click create.
+
+Next navigate back to the `dashboard` > `Manage Jenkins` > `System` and find the `GitHub` section. Add GitHub Server, name it like you want. You can leave the `API URL` default (https://api.github.com) and add your github-pat secret text file under the `Credentials` tab. You can test your credentials using a button, it should not fail if you did everythin correct. Also enable the `Manage hooks` checkbox. Make sure to save your changes before going to the next step.
+
+The next step is creating the pipeline. On your dashboard click on `New Item`, name it and select the `Pipeline` option. Select the `GitHub project` checkbox and fill in your GitHub project url like https://github.com/username/reponame. Select the `GitHub hook trigger for GITScm polling` as build trigger. Finally enter the following pipeline:
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/test_branch']], userRemoteConfigs: [[url: 'https://github.com/lowie2727/master-thesis-ansible.git']]])
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Hello world!"
+            }
+        }
+    }
+}
+```
+
+> [!WARNING]
+> Be sure to build this manually at least once to make sure it works properly.

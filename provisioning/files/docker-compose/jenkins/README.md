@@ -163,11 +163,16 @@ To run ansible-lint run the following pipeline:
 
 ```groovy
 pipeline {
-    agent any
+    agent {
+        node {
+            label 'agent1'
+        }
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/lowie2727/master-thesis-ansible.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: 'https://github.com/lowie2727/master-thesis-ansible.git']]])
             }
         }
 
@@ -175,18 +180,18 @@ pipeline {
             steps {
                 sh 'ansible-lint provisioning/main.yml'
             }
+        }
+    }
 
-            post {
-                success {
-                    echo 'Stage completed successfully'
-                    sh 'curl -d "The build was successful. Build number: ${BUILD_NUMBER}, Git commit: ${GIT_COMMIT}, Job URL: ${BUILD_URL}" ntfy.sh/mytopic'
-                }
+    post {
+        success {
+            echo 'Stage completed successfully'
+            sh 'curl -d "The build was successful. Build number: ${BUILD_NUMBER}, Git commit: ${GIT_COMMIT}, Job URL: ${BUILD_URL}" ntfy.sh/mytopic'
+        }
 
-                failure {
-                    echo 'Stage failed'
-                    sh 'curl -d "The build was successful. Build number: ${BUILD_NUMBER}, Git commit: ${GIT_COMMIT}, Job URL: ${BUILD_URL}" ntfy.sh/mytopic'
-                }
-            }
+        failure {
+            echo 'Stage failed'
+            sh 'curl -d "The build was successful. Build number: ${BUILD_NUMBER}, Git commit: ${GIT_COMMIT}, Job URL: ${BUILD_URL}" ntfy.sh/mytopic'
         }
     }
 }
@@ -194,3 +199,10 @@ pipeline {
 
 > [!NOTE]
 > This pipeline first checks out this repository and afterwards runs the ansible-lint command. The final step is sending a notification to a [ntfy](https://ntfy.sh/) topic.
+
+## Pipeline script from SCM
+
+If you want the pipeline script to be included in the repository itself, you can select the `Pipeline script from SCM option` instead of the `Pipeline script` option. The configuration options are very straight forward.
+
+> [!NOTE]
+> The pipeline configurations can be found in the [Jenkinsfile](/Jenkinsfile) and the [script.groovy](/script.groovy) file for this repository.

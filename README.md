@@ -1,5 +1,8 @@
 # Master thesis
 
+> [!IMPORTANT]
+> If you're looking for more details on the Jenkins server deployment and configuration, you can find them [here](/provisioning/files/docker-compose/jenkins/).
+
 ## Vagrant
 
 To make it easier to test the Ansible playbook on virtual machines, [Vagrant](https://developer.hashicorp.com/vagrant) is used.

@@ -1,7 +1,6 @@
 FROM jenkins/ssh-agent:alpine-jdk17 as ssh-agent
 
-# Install pip
-RUN apk --no-cache add py3-pip
+RUN apk --no-cache add ansible ansible-lint curl
 
 ENV JENKINS_AGENT_HOME=/home/jenkins
 

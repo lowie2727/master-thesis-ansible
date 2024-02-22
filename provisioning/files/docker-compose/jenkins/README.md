@@ -135,7 +135,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/test_branch']], userRemoteConfigs: [[url: 'https://github.com/lowie2727/master-thesis-ansible.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/lowie2727/master-thesis-ansible.git']]])
             }
         }
 
@@ -150,3 +150,47 @@ pipeline {
 
 > [!WARNING]
 > Be sure to build this manually at least once to make sure it works properly.
+
+## Ansible lint checking of this repository with notification
+
+First you have to modify the [Dockerfile](Dockerfile) to include `ansible`, `ansible-lint` and `curl`. Include the following line in the Dockerfile:
+
+```Dockerfile
+RUN apk --no-cache add ansible ansible-lint curl
+```
+
+To run ansible-lint run the following pipeline:
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/lowie2727/master-thesis-ansible.git']]])
+            }
+        }
+
+        stage('Run ansible-lint') {
+            steps {
+                sh 'ansible-lint provisioning/main.yml'
+            }
+
+            post {
+                success {
+                    echo 'Stage completed successfully'
+                    sh 'curl -d "The build was successful. Build number: ${BUILD_NUMBER}, Git commit: ${GIT_COMMIT}, Job URL: ${BUILD_URL}" ntfy.sh/mytopic'
+                }
+
+                failure {
+                    echo 'Stage failed'
+                    sh 'curl -d "The build was successful. Build number: ${BUILD_NUMBER}, Git commit: ${GIT_COMMIT}, Job URL: ${BUILD_URL}" ntfy.sh/mytopic'
+                }
+            }
+        }
+    }
+}
+```
+
+> [!NOTE]
+> This pipeline first checks out this repository and afterwards runs the ansible-lint command. The final step is sending a notification to a [ntfy](https://ntfy.sh/) topic.

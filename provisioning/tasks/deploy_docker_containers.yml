@@ -30,9 +30,19 @@
     group: "{{ group }}"
     mode: "0755"
 
+- name: Check if key file is already present
+  ansible.builtin.stat:
+    path: "{{ path_to_appdata }}/jenkins/jenkins_agent_key"
+  register: output
+
+- name: Debug output previous task
+  ansible.builtin.debug:
+    msg: "{{ output.stat.exists }}"
+
 - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
   community.crypto.openssh_keypair:
     path: "{{ path_to_appdata }}/jenkins/jenkins_agent_key"
+  when: not output.stat.exists
 
 - name: Set permissions for jenkins_agent_key file
   ansible.builtin.file:

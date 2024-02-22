@@ -12,6 +12,7 @@ pipeline {
             steps {
                 script {
                     gv = load "script.groovy"
+                    gv.setBuildNumber()
                 }
             }
         }
@@ -34,6 +35,12 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                gv.always()
+            }
+        }
+
         success {
             script {
                 gv.succes()

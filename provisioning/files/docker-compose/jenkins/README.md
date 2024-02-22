@@ -68,6 +68,13 @@ The suggested plugins are:
 - [Timestamper](https://plugins.jenkins.io/timestamper)
 - [Workspace Cleanup Plugin](https://plugins.jenkins.io/ws-cleanup)
 
+> [!TIP]
+> Other useful plugins not included by default are:
+> - [Build Monitor View](https://plugins.jenkins.io/build-monitor-plugin/)
+> - [Build Name and Description Setter](https://plugins.jenkins.io/build-name-setter/)
+> - [Embeddable Build Status](https://plugins.jenkins.io/embeddable-build-status/)
+> - [Pipeline Graph View](https://plugins.jenkins.io/pipeline-graph-view/)
+
 ### Using agents
 
 Follow the following guide to setup an agent.

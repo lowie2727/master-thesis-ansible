@@ -44,46 +44,57 @@ Navigate to the web interface and check the log files for the initial admin pass
 docker logs jenkins
 ```
 
-After entering the initial admin password select install suggested plugins.
+After entering the initial admin password select `Select plugins to install`.
 
 The suggested plugins are:
 
-- [Ant Plugin](https://plugins.jenkins.io/ant)
+- [Folders Plugin](https://plugins.jenkins.io/cloudbees-folder)
+- [OWASP Markup Formatter Plugin](https://plugins.jenkins.io/antisamy-markup-formatter)
 - [Build Timeout](https://plugins.jenkins.io/build-timeout)
 - [Credentials Binding Plugin](https://plugins.jenkins.io/credentials-binding)
-- [Email Extension Plugin](https://plugins.jenkins.io/email-ext)
-- [Folders Plugin](https://plugins.jenkins.io/cloudbees-folder)
-- [Git plugin](https://plugins.jenkins.io/git)
-- [GitHub Branch Source Plugin](https://plugins.jenkins.io/github-branch-source)
-- [Gradle Plugin](https://plugins.jenkins.io/gradle)
-- [JavaMail API](https://plugins.jenkins.io/javax-mail-api)
-- [LDAP Plugin](https://plugins.jenkins.io/ldap)
-- [Matrix Authorization Strategy Plugin](https://plugins.jenkins.io/matrix-auth)
-- [OWASP Markup Formatter Plugin](https://plugins.jenkins.io/antisamy-markup-formatter)
-- [PAM Authentication plugin](https://plugins.jenkins.io/pam-auth)
-- [Pipeline](https://plugins.jenkins.io/workflow-aggregator)
-- [Pipeline: GitHub Groovy Libraries](https://plugins.jenkins.io/pipeline-github-lib)
-- [Pipeline: Stage View Plugin](https://plugins.jenkins.io/pipeline-stage-view)
-- [SSH Build Agents plugin](https://plugins.jenkins.io/ssh-slaves)
 - [Timestamper](https://plugins.jenkins.io/timestamper)
 - [Workspace Cleanup Plugin](https://plugins.jenkins.io/ws-cleanup)
+- [Gradle Plugin](https://plugins.jenkins.io/gradle)
+- [Pipeline](https://plugins.jenkins.io/workflow-aggregator)
+- [GitHub Branch Source Plugin](https://plugins.jenkins.io/github-branch-source)
+- [Pipeline: GitHub Groovy Libraries](https://plugins.jenkins.io/pipeline-github-lib)
+- [Pipeline: Stage View Plugin](https://plugins.jenkins.io/pipeline-stage-view)
+- [Git plugin](https://plugins.jenkins.io/git)
+- [SSH Build Agents plugin](https://plugins.jenkins.io/ssh-slaves)
+- [Matrix Authorization Strategy Plugin](https://plugins.jenkins.io/matrix-auth)
+- [PAM Authentication plugin](https://plugins.jenkins.io/pam-auth)
+- [LDAP Plugin](https://plugins.jenkins.io/ldap)
+- [Email Extension Plugin](https://plugins.jenkins.io/email-ext)
+- [Mailer](https://plugins.jenkins.io/mailer)
+- [Dark Theme](https://plugins.jenkins.io/dark-theme/)
 
 > [!TIP]
 > Other useful plugins not included by default are:
 > - [Build Monitor View](https://plugins.jenkins.io/build-monitor-plugin/)
 > - [Build Name and Description Setter](https://plugins.jenkins.io/build-name-setter/)
 > - [Embeddable Build Status](https://plugins.jenkins.io/embeddable-build-status/)
+> - [GitHub](https://plugins.jenkins.io/github/)
 > - [Pipeline Graph View](https://plugins.jenkins.io/pipeline-graph-view/)
 
 ### Using agents
 
-Follow the following guide to setup an agent.
+#### Docker agent
+
+Follow the following guide to setup an agent using Docker.
 
 - [agents](https://www.jenkins.io/doc/book/using/using-agents/)
 
 You can find the add credentials button at `Manage Jenkins > Credentials > System > Global credentials (unrestricted)`. The public and private key can be found in the `/home/your_username/appdata/jenkins` folder on your Jenkins server.
 
 You can skip the agent1 creation because it should already by present in Jenkins but it doesn't always work. It's the same as in the guide except for the host parameter. The host parameter is set `ssh-agent` because of Docker networking.
+
+#### Windows agent
+
+If you want a Jenkins windows agent you will have to install the [Java JDK 17](https://www.oracle.com/java/technologies/downloads/#jdk17-windows) first. You also need [openSSH](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell) client and server to connect to the main Jenkins server.
+
+You can follow this [guide](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement) to generate the public and private key pair. If you're an administrator on the Windows machine, make sure your public key is stored in `C:\ProgramData\ssh\administrators_authorized_keys`. You can read more about it [here](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement#administrative-user). The private key should be stored in the Jenkins server under the credentials tab.
+
+To add a node go to `Dashboard` > `Manage Jenkins` > `Nodes` and click on `New Node`. Name it `windows-agent` and create it. Set the `Remote root directory` to `c:\jenkins\agents`. Set the `Labels` parameter to `windows-agent`. Set the `Launch method` to `Launch agents via SSH`. The `Host` parameter should be set to the ip of the windows machine. Add the ssh credentials for your windows machine and make sure to set `Host Key Verification Strategy` to `Manually trusted key Verification Strategy`.
 
 ### First job
 

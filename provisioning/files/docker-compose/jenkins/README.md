@@ -224,3 +224,23 @@ If you want the pipeline script to be included in the repository itself, you can
 
 > [!NOTE]
 > The pipeline configurations can be found in the [Jenkinsfile](/Jenkinsfile) and the [script.groovy](/script.groovy) file for this repository.
+
+## Using a private repository
+
+If you are using a private repository, you can put the following line in your groovy script:
+
+```groovy
+checkout scmGit(branches: [[name: '*/main']],
+                userRemoteConfigs: [[credentialsId: 'your-credential-id-here', url: 'git@github.com:username/reponame.git']])
+```
+
+You can generate a key pair using the following command:
+
+```zsh
+ssh-keygen -t ed25519 -C "your-comment-here"
+```
+
+If you only want to create acces for a single repository navigate to your repository settings in GitHub and go to the `Deploy keys` section and click on `Add deploy key`. Paste your public key in the designated place. Don't forget to add your private key in the Jenkins credentials.
+
+> [!IMPORTANT]
+> If you get the following error message `stderr: No ED25519 host key is known for github.com and you have requested strict checking.` in the output logs, then you can temporarily set the `Git Host Key Verification Configuration` to `Accept first connection`.

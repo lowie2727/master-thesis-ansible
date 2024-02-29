@@ -1,5 +1,18 @@
 # Jenkins
 
+## Table of contents
+
+- [Useful links](#useful-links)
+- [Setup](#setup)
+- [Create nightly builds pipeline](#create-nightly-builds-pipeline)
+- [Polling source control management (SCM) for changes](#polling-source-control-management-scm-for-changes)
+- [Create continuous integration pipeline](#create-continuous-integration-pipeline)
+- [Ansible lint checking of this repository with notification](#ansible-lint-checking-of-this-repository-with-notification)
+- [Pipeline script from source control management (SCM)](#pipeline-script-from-source-control-management-scm)
+- [Using a private repository](#using-a-private-repository)
+
+## Useful links
+
 - [source code](https://github.com/jenkinsci/jenkins)
 - [docker wiki](https://github.com/jenkinsci/docker#docker-compose-with-jenkins)
 - [main site](https://www.jenkins.io/)
@@ -136,6 +149,10 @@ pipeline {
 }
 ```
 
+## Polling source control management (SCM) for changes
+
+If you want the Jenkins server to check the repository for changes you can enable the `Poll SCM` build trigger. You can set a schedule for checking changes in the remote repository. It will trigger a build if there are changes dectected (new commits). A better way to implement Jenkins is explained in the following [section](#create-continuous-integration-pipeline).
+
 ## Create continuous integration pipeline
 
 > [!IMPORTANT]
@@ -218,7 +235,7 @@ pipeline {
 > [!NOTE]
 > This pipeline first checks out this repository and afterwards runs the ansible-lint command. The final step is sending a notification to a [ntfy](https://ntfy.sh/) topic.
 
-## Pipeline script from SCM
+## Pipeline script from source control management (SCM)
 
 If you want the pipeline script to be included in the repository itself, you can select the `Pipeline script from SCM option` instead of the `Pipeline script` option. The configuration options are very straight forward.
 
